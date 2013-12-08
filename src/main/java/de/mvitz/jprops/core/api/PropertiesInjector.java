@@ -4,6 +4,12 @@ import java.lang.reflect.Field;
 
 public final class PropertiesInjector {
 
+    private final PropertyProvider properties;
+
+    public PropertiesInjector(final PropertyProvider provider) {
+        this.properties = provider;
+    }
+
     public void injectInto(final Object instance) {
         for (final Field field : instance.getClass().getDeclaredFields()) {
             handle(instance, field);
@@ -20,7 +26,7 @@ public final class PropertiesInjector {
                 field.set(instance, value);
             } catch (final IllegalAccessException e) {
                 throw new InvalidPropertiesException(String.format(
-                        "Could not inject field '%s' because: %s", field.getName(),
+                        "Can't inject field '%s' because: %s", field.getName(),
                         e.getLocalizedMessage()), e);
             }
         }
@@ -28,10 +34,13 @@ public final class PropertiesInjector {
 
     private Object valueFor(final Field field) {
         final Class<?> type = field.getType();
-        if (int.class.equals(type)) {
-            return 0;
-        } else if (Integer.class.equals(type)) {
-            return 0;
+        final Object value = properties.get(field.getName());
+        if (value == null && type.isPrimitive()) {
+            throw new InvalidPropertiesException(
+                    "Can't inject 'null' into primitive field of type: " + type.getName());
+        }
+        if (int.class.equals(type) || Integer.class.equals(type)) {
+            return Integer.parseInt(value.toString());
         } else if (boolean.class.equals(type)) {
             return false;
         } else if (Boolean.class.equals(type)) {

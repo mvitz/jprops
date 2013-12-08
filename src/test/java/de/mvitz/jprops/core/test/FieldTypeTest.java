@@ -6,12 +6,31 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.mvitz.jprops.core.api.PropertiesInjector;
+import de.mvitz.jprops.core.api.PropertyProvider;
 
 public class FieldTypeTest {
 
     @Before
     public void setUp() {
-        new PropertiesInjector().injectInto(this);
+        new PropertiesInjector(new PropertyProvider() {
+            @Override
+            public Object get(final String key) {
+                switch (key) {
+                case "stringField":
+                    return "foo";
+                case "intField":
+                case "intWrapperField":
+                    return 0;
+                case "booleanField":
+                case "booleanWrapperField":
+                    return false;
+                case "enumField":
+                    return Enum.INSTANCE;
+                default:
+                    throw new IllegalArgumentException("No value found for key: " + key);
+                }
+            }
+        }).injectInto(this);
     }
 
     private String stringField;

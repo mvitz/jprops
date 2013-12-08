@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.mvitz.jprops.core.api.PropertiesInjector;
+import de.mvitz.jprops.core.api.PropertyProvider;
 
 public final class FieldScopeTest {
 
@@ -16,7 +17,12 @@ public final class FieldScopeTest {
 
     @Before
     public void setUp() {
-        new PropertiesInjector().injectInto(this);
+        new PropertiesInjector(new PropertyProvider() {
+            @Override
+            public Object get(final String key) {
+                return "foo";
+            }
+        }).injectInto(this);
     }
 
     @Test
