@@ -11,7 +11,7 @@ public final class PropertiesInjector {
     }
 
     private void handle(final Object instance, final Field field) {
-        final String value = valueFor(field);
+        final Object value = valueFor(field);
         try {
             field.set(instance, value);
         } catch (final IllegalAccessException _) {
@@ -26,7 +26,21 @@ public final class PropertiesInjector {
         }
     }
 
-    private String valueFor(final Field field) {
+    private Object valueFor(final Field field) {
+        final Class<?> type = field.getType();
+        if (int.class.equals(type)) {
+            return 0;
+        } else if (Integer.class.equals(type)) {
+            return 0;
+        } else if (boolean.class.equals(type)) {
+            return false;
+        } else if (Boolean.class.equals(type)) {
+            return false;
+        } else if (type.isEnum()) {
+            for (final Object c : type.getEnumConstants()) {
+                return c;
+            }
+        }
         return "foo";
     }
 
