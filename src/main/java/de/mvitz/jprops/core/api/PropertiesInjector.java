@@ -2,15 +2,37 @@ package de.mvitz.jprops.core.api;
 
 import java.lang.reflect.Field;
 
+/**
+ * This class is used to inject the properties into an given object.
+ * <p>
+ * The property's value is retrieved by the given {@link PropertyProvider}.
+ * 
+ * @author Michael Vitz
+ * 
+ */
 public final class PropertiesInjector {
 
     private final PropertyProvider properties;
 
+    /**
+     * Creates a new injector with the given {@link PropertyProvider}.
+     * 
+     * @param provider
+     *            the provider used for getting the properties values
+     */
     public PropertiesInjector(final PropertyProvider provider) {
         this.properties = provider;
     }
 
-    public void injectInto(final Object instance) {
+    /**
+     * Injects all properties into the given instance.
+     * 
+     * @param instance
+     *            the instance where the properties should be injected into
+     * @throws InvalidPropertiesException
+     *             if any of the given properties is invalid
+     */
+    public void injectInto(final Object instance) throws InvalidPropertiesException {
         for (final Field field : instance.getClass().getDeclaredFields()) {
             handle(instance, field);
         }
