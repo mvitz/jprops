@@ -55,7 +55,9 @@ public final class PropertiesInjector {
      */
     public void injectInto(final Object instance) throws InvalidPropertiesException {
         for (final Field field : instance.getClass().getDeclaredFields()) {
-            handle(instance, field);
+            if (!field.isSynthetic()) { // ignore generated fields
+                handle(instance, field);
+            }
         }
     }
 
@@ -76,6 +78,7 @@ public final class PropertiesInjector {
     }
 
     private Object valueFor(final Field field) {
+        System.out.println(field.getName());
         final String value = properties.get(field.getName());
         if (value == null) {
             return null;
@@ -94,7 +97,8 @@ public final class PropertiesInjector {
     private ValueTypeConverter<?> converter(final Class<?> type) {
         final ValueTypeConverter<?> converter = converters.get(type);
         if (converter == null) {
-            throw new InvalidPropertiesException("No converter found for type: " + type.getName());
+            throw new InvalidPropertiesException("No converter found for type: "
+                    + type.getSimpleName());
         }
         return converter;
     }
