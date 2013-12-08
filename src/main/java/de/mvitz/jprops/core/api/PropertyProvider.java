@@ -15,6 +15,6 @@ public interface PropertyProvider {
      *            the key of the property the value should be gotten for
      * @return the value of the property, <code>null</code> if no value was found
      */
-    Object get(String key);
+    String get(String key);
 
 }

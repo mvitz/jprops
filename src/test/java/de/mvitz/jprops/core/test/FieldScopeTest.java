@@ -19,7 +19,7 @@ public final class FieldScopeTest {
     public void setUp() {
         new PropertiesInjector(new PropertyProvider() {
             @Override
-            public Object get(final String key) {
+            public String get(final String key) {
                 return "foo";
             }
         }).injectInto(this);

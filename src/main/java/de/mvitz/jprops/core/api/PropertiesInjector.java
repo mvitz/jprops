@@ -1,6 +1,15 @@
 package de.mvitz.jprops.core.api;
 
 import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import de.mvitz.jprops.core.impl.typeconverter.BooleanConverter;
+import de.mvitz.jprops.core.impl.typeconverter.EnumConverter;
+import de.mvitz.jprops.core.impl.typeconverter.IntConverter;
+import de.mvitz.jprops.core.impl.typeconverter.StringConverter;
+import de.mvitz.jprops.core.spi.ValueTypeConverter;
 
 /**
  * This class is used to inject the properties into an given object.
@@ -11,6 +20,18 @@ import java.lang.reflect.Field;
  * 
  */
 public final class PropertiesInjector {
+
+    private static final Map<Class<?>, ValueTypeConverter<?>> converters = Collections
+            .synchronizedMap(new HashMap<Class<?>, ValueTypeConverter<?>>());
+
+    static {
+        register(String.class, new StringConverter());
+        register(int.class, new IntConverter());
+        register(Integer.class, new IntConverter());
+        register(boolean.class, new BooleanConverter());
+        register(Boolean.class, new BooleanConverter());
+        // enum is a special case
+    }
 
     private final PropertyProvider properties;
 
@@ -55,24 +76,40 @@ public final class PropertiesInjector {
     }
 
     private Object valueFor(final Field field) {
-        final Class<?> type = field.getType();
-        final Object value = properties.get(field.getName());
-        if (value == null && type.isPrimitive()) {
-            throw new InvalidPropertiesException(
-                    "Can't inject 'null' into primitive field of type: " + type.getName());
+        final String value = properties.get(field.getName());
+        if (value == null) {
+            return null;
         }
-        if (int.class.equals(type) || Integer.class.equals(type)) {
-            return Integer.parseInt(value.toString());
-        } else if (boolean.class.equals(type)) {
-            return false;
-        } else if (Boolean.class.equals(type)) {
-            return false;
-        } else if (type.isEnum()) {
-            for (final Object c : type.getEnumConstants()) {
-                return c;
-            }
+        if (field.getType().isEnum()) {
+            return convertEnum(field.getType(), value);
         }
-        return "foo";
+        return converter(field.getType()).convert(value);
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    private Object convertEnum(final Class<?> enumType, final String value) {
+        return new EnumConverter(enumType).convert(value);
+    }
+
+    private ValueTypeConverter<?> converter(final Class<?> type) {
+        final ValueTypeConverter<?> converter = converters.get(type);
+        if (converter == null) {
+            throw new InvalidPropertiesException("No converter found for type: " + type.getName());
+        }
+        return converter;
+    }
+
+    /**
+     * Registers a user-defined {@link ValueTypeConverter}.
+     * 
+     * @param type
+     *            the type the given converter converts to
+     * @param converter
+     *            the converter
+     */
+    public static <T> void register(final Class<T> type,
+            final ValueTypeConverter<? extends T> converter) {
+        converters.put(type, converter);
     }
 
 }
