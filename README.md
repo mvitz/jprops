@@ -16,13 +16,25 @@ TODO
 ToDo
 --------
 
-* Validation
-* i18n
-* Logging
-* Maven Central
+* Add validation for injected class
+* Add i18n for error messages
+* Add logging with slf4j
+* Prepare for installation in Maven Central
 * Add usage part to README
 * Add usage part to Javadoc
 * Add continuous integration
+* Add more providers:
+ * PropertyFileProvider
+ * DatabaseProvider
+ * LdapProvider
+* Add more type converters:
+ * long
+ * Long
+ * char
+ * Character
+ * Locale
+ * InetAddress
+ * File
 
 License
 --------
