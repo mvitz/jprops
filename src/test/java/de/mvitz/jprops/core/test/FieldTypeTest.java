@@ -16,10 +16,16 @@ public class FieldTypeTest {
             @Override
             public String get(final String key) {
                 switch (key) {
+                case "booleanField":
+                case "booleanWrapperField":
+                case "intField":
+                case "intWrapperField":
+                case "stringField":
+                    return "1";
                 case "enumField":
                     return "An-InstAnce";
                 default:
-                    return "1";
+                    return null;
                 }
             }
         }).injectInto(this);

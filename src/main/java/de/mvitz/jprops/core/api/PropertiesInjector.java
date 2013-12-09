@@ -55,9 +55,7 @@ public final class PropertiesInjector {
      */
     public void injectInto(final Object instance) throws InvalidPropertiesException {
         for (final Field field : instance.getClass().getDeclaredFields()) {
-            if (!field.isSynthetic()) { // ignore generated fields
-                handle(instance, field);
-            }
+            handle(instance, field);
         }
     }
 

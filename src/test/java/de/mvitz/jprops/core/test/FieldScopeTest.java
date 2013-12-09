@@ -20,7 +20,15 @@ public final class FieldScopeTest {
         new PropertiesInjector(new PropertyProvider() {
             @Override
             public String get(final String key) {
-                return "foo";
+                switch (key) {
+                case "publicField":
+                case "protectedField":
+                case "packageField":
+                case "privateField":
+                    return "foo";
+                default:
+                    return null;
+                }
             }
         }).injectInto(this);
     }
