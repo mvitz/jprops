@@ -1,6 +1,6 @@
 package de.mvitz.jprops.core.impl.provider;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Properties;
 

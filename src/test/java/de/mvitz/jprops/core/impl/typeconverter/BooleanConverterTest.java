@@ -1,6 +1,6 @@
 package de.mvitz.jprops.core.impl.typeconverter;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 import java.util.Collection;
