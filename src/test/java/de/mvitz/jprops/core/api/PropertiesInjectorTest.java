@@ -1,5 +1,7 @@
 package de.mvitz.jprops.core.api;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.mockito.BDDMockito.given;
 
 import org.junit.Test;
@@ -16,13 +18,18 @@ public class PropertiesInjectorTest {
     @InjectMocks
     private PropertiesInjector injector;
 
-    @SuppressWarnings("unused")
     private UnknownType unknownType;
 
-    @Test(expected = InvalidPropertiesException.class)
+    @Test
     public void shouldThrowExceptionForUnknownType() throws Exception {
         given(provider.get("unknownType")).willReturn("foo");
-        injector.injectInto(this);
+        try {
+            injector.injectInto(this);
+            failBecauseExceptionWasNotThrown(InvalidPropertiesException.class);
+        } catch (final InvalidPropertiesException e) {
+            assertThat(e).hasNoCause().hasMessage("No converter found for type: UnknownType");
+            assertThat(unknownType).isNull();
+        }
     }
 
     public interface UnknownType {
