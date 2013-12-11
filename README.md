@@ -1,43 +1,35 @@
-jprops
-==================
-
+# jprops [![Build Status](https://travis-ci.org/mvitz/jprops.png)](https://travis-ci.org/mvitz/jprops)
 jprops eases property handling in java.
 
-Installation
-------------
-
+## Installation
 TODO
 
-Usage
---------
-
+## Usage
 TODO
 
-ToDo
---------
+## TODO
+- Add validation for injected class
+- Add i18n for error messages
+- Add logging with slf4j
+- Prepare for installation in Maven Central
+- Add usage part to README
+- Add usage part to Javadoc
+- Add more providers:
+ - DatabaseProvider
+ - LdapProvider
+- Add more type converters:
+ - long
+ - Long
+ - char
+ - Character
+ - Locale
+ - InetAddress
+ - File
 
-* Add validation for injected class
-* Add i18n for error messages
-* Add logging with slf4j
-* Prepare for installation in Maven Central
-* Add usage part to README
-* Add usage part to Javadoc
-* Add continuous integration
-* Add more providers:
- * DatabaseProvider
- * LdapProvider
-* Add more type converters:
- * long
- * Long
- * char
- * Character
- * Locale
- * InetAddress
- * File
+## Contribution
+TODO
 
-License
---------
-
+## License
 Copyright (c) 2013 Michael Vitz and other contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
