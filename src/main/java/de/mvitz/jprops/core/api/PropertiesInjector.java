@@ -76,7 +76,6 @@ public final class PropertiesInjector {
     }
 
     private Object valueFor(final Field field) {
-        System.out.println(field.getName());
         final String value = properties.get(field.getName());
         if (value == null) {
             return null;
