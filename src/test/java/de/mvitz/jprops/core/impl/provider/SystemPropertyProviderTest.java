@@ -26,4 +26,9 @@ public class SystemPropertyProviderTest {
         }
     }
 
+    @Test
+    public void providerShouldReturnNullWhenNoPropertyIsFound() throws Exception {
+        assertThat(new SystemPropertyProvider().get("abc")).isNull();
+    }
+
 }
