@@ -24,7 +24,6 @@ ToDo
 * Add usage part to Javadoc
 * Add continuous integration
 * Add more providers:
- * PropertyFileProvider
  * DatabaseProvider
  * LdapProvider
 * Add more type converters:
