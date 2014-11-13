@@ -1,4 +1,4 @@
-# jprops [![Build Status](https://travis-ci.org/mvitz/jprops.png)](https://travis-ci.org/mvitz/jprops)
+# jprops [![Build Status](https://travis-ci.org/User/Repository.png)](https://travis-ci.org/User/Repository)
 jprops eases property handling in java.
 
 ## Installation
